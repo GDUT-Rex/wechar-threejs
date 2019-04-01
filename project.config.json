@@ -1,0 +1,33 @@
+{
+	"description": "",
+	"setting": {
+		"urlCheck": true,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
+		"newFeature": false
+	},
+	"compileType": "game",
+	"libVersion": "2.0.2",
+	"appid": "wx4fd1f8fd91795164",
+	"projectname": "threejs-in-wechat-game-master",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"currentL": -1,
+			"list": [],
+			"current": -1
+		},
+		"miniprogram": {
+			"current": -1,
+			"list": []
+		}
+	}
+}
