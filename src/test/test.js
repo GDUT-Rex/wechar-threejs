@@ -68,47 +68,58 @@ export class test {
     this.hubCanvas = wx.createCanvas();
     this.context = this.hubCanvas.getContext('2d');
     console.log(this.context)
-    this.context.moveTo(0, 0);
-    this.context.lineTo(150, 0);
-    this.context.lineTo(150, 150);
-    this.context.lineTo(0, 150);
-    this.context.lineTo(0, 0);
+    // this.context.moveTo(0, 0);
+    // this.context.lineTo(150, 0);
+    // this.context.lineTo(150, 150);
+    // this.context.lineTo(0, 150);
+    // this.context.lineTo(0, 0);
     this.context.stroke();
+    let image = new Image()
+    image.src = 'https://www.gdutrex.xyz/imba/test.jpg'
+    image.width = 500
+    image.height =500
+    // 加载完图像在渲染
+    image.onload = () => {
+      console.log(image.isMap)
+      this.context.drawImage(image, 0, 0, 500, 500)
 
-    this.hubgeometry = new THREE.PlaneGeometry(500, 500) // 设置成屏幕的宽高
-    this.scoreTexture = new THREE.CanvasTexture(this.hubCanvas)
-    this.scoreTexture.minFilter  = THREE.LinearFilter
-    this.scoreTexture.needsUpdate = true
-    let hubmaterial = new THREE.MeshBasicMaterial({
-      map: this.scoreTexture,
-      transparent: true,
-      opacity: 1
-    })
-    let scorePlane = new THREE.Mesh(this.hubgeometry, hubmaterial)
-    this.hubScene.add(scorePlane)
-    //ground
-    const mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2000, 2000), new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false }));
-    mesh.rotation.x = - Math.PI / 2;
-    mesh.receiveShadow = true;
-    this.scene.add(mesh);
-    //物体
-    var geometry = new THREE.BoxGeometry(50, 50, 50);
-    var material = new THREE.MeshPhongMaterial({ color: 0x00ff00, depthWrite: false });
-    this.cube = new THREE.Mesh(geometry, material);
-    this.cube.position.set(100,100,-150);
-    this.cube.castShadow = true;
-    this.scene.add(this.cube);
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvas });
-    this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.shadowMap.enabled = true;
-    this.renderer.autoClear = false;
-    this.renderer.render(this.scene, this.camera);
-    // hub render
-    this.renderer.clearDepth();
-    this.renderer.render(this.hubScene, this.hudCamera)
-    
+
+      this.hubgeometry = new THREE.PlaneGeometry(500, 500) // 设置成屏幕的宽高
+      this.scoreTexture = new THREE.CanvasTexture(this.hubCanvas)
+      this.scoreTexture.minFilter = THREE.LinearFilter
+      this.scoreTexture.needsUpdate = true
+      let hubmaterial = new THREE.MeshBasicMaterial({
+        map: this.scoreTexture,
+        transparent: true,
+        opacity: 1
+      })
+      let scorePlane = new THREE.Mesh(this.hubgeometry, hubmaterial)
+      this.hubScene.add(scorePlane)
+      //ground
+      const mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2000, 2000), new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false }));
+      mesh.rotation.x = - Math.PI / 2;
+      mesh.receiveShadow = true;
+      this.scene.add(mesh);
+      //物体
+      var geometry = new THREE.BoxGeometry(50, 50, 50);
+      var material = new THREE.MeshPhongMaterial({ color: 0x00ff00, depthWrite: false });
+      this.cube = new THREE.Mesh(geometry, material);
+      this.cube.position.set(100, 100, -150);
+      this.cube.castShadow = true;
+      this.scene.add(this.cube);
+      this.renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvas });
+      this.renderer.setPixelRatio(window.devicePixelRatio);
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.renderer.shadowMap.enabled = true;
+      this.renderer.autoClear = false;
+      this.renderer.render(this.scene, this.camera);
+      // hub render
+      this.renderer.clearDepth();
+      this.renderer.render(this.hubScene, this.hudCamera)
+
     // window.requestAnimationFrame(this.animation.bind(this), canvas);
+    }
+    
   }
   animation(){
     // console.log(this.animation)
