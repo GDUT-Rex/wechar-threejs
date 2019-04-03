@@ -9,7 +9,7 @@ require("../libs/three/js/controls/OrbitControls")
 export class test {
   constructor() {
     this.init();
-    this.animation();
+    // this.animation();
   }
   init(){
     this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
@@ -57,7 +57,35 @@ export class test {
     // spotLight.shadow.camera.far = 4000;
     // spotLight.shadow.camera.fov = 30;
     //this.scene.add(spotLight);
+    // hub 绘制
+    // hub 相机
+    this.hudCamera = new THREE.OrthographicCamera(-window.innerWidth / 2, window.innerWidth / 2,                   window.innerHeight / 2, -window.innerHeight / 2, -10, 10);
 
+    this.hudCamera.updateProjectionMatrix();
+    this.hudCamera.lookAt(new THREE.Vector3(0, 0, 0));
+    // hub scene
+    this.hubScene = new THREE.Scene();
+    this.hubCanvas = wx.createCanvas();
+    this.context = this.hubCanvas.getContext('2d');
+    console.log(this.context)
+    this.context.moveTo(0, 0);
+    this.context.lineTo(150, 0);
+    this.context.lineTo(150, 150);
+    this.context.lineTo(0, 150);
+    this.context.lineTo(0, 0);
+    this.context.stroke();
+
+    this.hubgeometry = new THREE.PlaneGeometry(500, 500) // 设置成屏幕的宽高
+    this.scoreTexture = new THREE.CanvasTexture(this.hubCanvas)
+    this.scoreTexture.minFilter  = THREE.LinearFilter
+    this.scoreTexture.needsUpdate = true
+    let hubmaterial = new THREE.MeshBasicMaterial({
+      map: this.scoreTexture,
+      transparent: true,
+      opacity: 1
+    })
+    let scorePlane = new THREE.Mesh(this.hubgeometry, hubmaterial)
+    this.hubScene.add(scorePlane)
     //ground
     const mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2000, 2000), new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false }));
     mesh.rotation.x = - Math.PI / 2;
@@ -74,7 +102,12 @@ export class test {
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.shadowMap.enabled = true;
+    this.renderer.autoClear = false;
     this.renderer.render(this.scene, this.camera);
+    // hub render
+    this.renderer.clearDepth();
+    this.renderer.render(this.hubScene, this.hudCamera)
+    
     // window.requestAnimationFrame(this.animation.bind(this), canvas);
   }
   animation(){
